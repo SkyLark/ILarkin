@@ -3,6 +3,7 @@
 import { TextArea, IconButton } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import { useChat } from '../lib/useChat';
+import ChatList from './ChatList';
 
 export default function ChatBar() {
   const [value, setValue] = useState('');
@@ -16,25 +17,34 @@ export default function ChatBar() {
     stop();
   };
 
+  const mockMessages = [
+    { role: 'user', content: 'Hello, how are you?' },
+    { role: 'assistant', content: 'I am fine, thank you! How can I assist you today?' },
+    { role: 'user', content: 'Can you tell me a joke?' },
+    {
+      role: 'assistant',
+      content: 'Sure! Why don’t skeletons fight each other? They don’t have the guts.',
+    },
+    { role: 'user', content: 'That’s a good one!' },
+    { role: 'assistant', content: 'Glad you liked it! Do you need help with anything else?' },
+    { role: 'user', content: 'No, that will be all for now.' },
+    { role: 'user', content: 'Hello, how are you?' },
+    { role: 'assistant', content: 'I am fine, thank you! How can I assist you today?' },
+    { role: 'user', content: 'Can you tell me a joke?' },
+    {
+      role: 'assistant',
+      content: 'Sure! Why don’t skeletons fight each other? They don’t have the guts.',
+    },
+    { role: 'user', content: 'That’s a good one!' },
+    { role: 'assistant', content: 'Glad you liked it! Do you need help with anything else?' },
+    { role: 'user', content: 'No, that will be all for now.' },
+  ];
+
   return (
-    <div className="relative flex flex-col justify-center w-full h-full">
-      <div className="w-full basis-auto grow relative  overflow-hidden  space-y-3 mb-10">
-        <div className="overflow-y-auto p-4 space-y-3">
-          {messages.map((m, i) => (
-            <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
-              <div
-                className={
-                  'inline-block rounded-xl px-3 py-2 ' +
-                  (m.role === 'user' ? 'bg-gray-900 text-white' : 'bg-gray-100')
-                }
-              >
-                {m.content}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="relative flex justify-center min-h-[40px] max-w-3xl">
+    <div className="relative flex flex-col justify-center w-full ">
+      <ChatList messages={messages} />
+
+      <div className="relative flex justify-center min-h-[40px] w-full mb-10">
         <TextArea
           placeholder="Ask anything"
           className="w-full"

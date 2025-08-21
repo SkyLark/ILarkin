@@ -1,10 +1,9 @@
 // lib/useChat.ts
 import { useRef, useState } from 'react';
-
-type Msg = { role: 'user' | 'assistant' | 'system'; content: string };
+import type { ChatMessage } from '../../types/chat';
 
 export function useChat(model = 'llama3.1:8b') {
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -16,7 +15,7 @@ export function useChat(model = 'llama3.1:8b') {
   async function send(input: string) {
     if (!input.trim() || isGenerating) return;
 
-    const next: Msg[] = [...messages, { role: 'user', content: input.trim() }];
+    const next: ChatMessage[] = [...messages, { role: 'user', content: input.trim() }];
     setMessages(next);
     setIsGenerating(true);
 

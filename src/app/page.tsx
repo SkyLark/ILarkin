@@ -9,13 +9,11 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="grid grid-cols-12 h-screen overflow-hidden w-full relative bg-white">
       <TopMenu />
-      <div className="grid grid-cols-12 h-full w-full relative bg-white">
-        <div className="col-span-9 col-start-4 z-50">
-          <ChatBar />
-        </div>
+      <div className="col-span-6 h-full w-full col-start-4 z-50">
+        <ChatBar />
       </div>
-    </>
+    </div>
   );
 }
