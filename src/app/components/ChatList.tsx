@@ -51,7 +51,11 @@ export default function ChatList({ messages }: Props) {
         <div className={isAtBottom ? 'grow-0' : 'grow'} />
 
         {messages.map((m, i) => (
-          <div key={i} className={`${m.role === 'user' ? 'text-right' : 'text-left'}`}>
+          <article
+            data-turn={m.role}
+            key={i}
+            className={`${m.role === 'user' ? 'text-right' : 'text-left'}`}
+          >
             <div
               className={
                 'inline-block rounded-xl px-3 py-2 ' +
@@ -60,7 +64,7 @@ export default function ChatList({ messages }: Props) {
             >
               <p>{m.content}</p>
             </div>
-          </div>
+          </article>
         ))}
 
         {/* Sentinel to scroll into view */}

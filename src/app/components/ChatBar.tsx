@@ -17,34 +17,9 @@ export default function ChatBar() {
     stop();
   };
 
-  const mockMessages = [
-    { role: 'user', content: 'Hello, how are you?' },
-    { role: 'assistant', content: 'I am fine, thank you! How can I assist you today?' },
-    { role: 'user', content: 'Can you tell me a joke?' },
-    {
-      role: 'assistant',
-      content: 'Sure! Why don’t skeletons fight each other? They don’t have the guts.',
-    },
-    { role: 'user', content: 'That’s a good one!' },
-    { role: 'assistant', content: 'Glad you liked it! Do you need help with anything else?' },
-    { role: 'user', content: 'No, that will be all for now.' },
-    { role: 'user', content: 'Hello, how are you?' },
-    { role: 'assistant', content: 'I am fine, thank you! How can I assist you today?' },
-    { role: 'user', content: 'Can you tell me a joke?' },
-    {
-      role: 'assistant',
-      content: 'Sure! Why don’t skeletons fight each other? They don’t have the guts.',
-    },
-    { role: 'user', content: 'That’s a good one!' },
-    { role: 'assistant', content: 'Glad you liked it! Do you need help with anything else?' },
-    { role: 'user', content: 'No, that will be all for now.' },
-  ];
-
   return (
     <div className="relative flex flex-col justify-center w-full ">
-      <ChatList messages={messages} />
-
-      <div className="relative flex justify-center min-h-[40px] w-full mb-10">
+      <div className="relative flex justify-center min-h-[35px] w-full">
         <TextArea
           placeholder="Ask anything"
           className="w-full"
