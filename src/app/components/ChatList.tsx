@@ -1,16 +1,18 @@
+'use client';
+
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react';
 import type { ChatMessage } from '../../types/chat';
 
-interface Props {
+interface ChatListProps {
   messages: ChatMessage[];
 }
 
-export default function ChatList({ messages }: Props) {
+export default function ChatList({ messages }: ChatListProps) {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
 
-  // Track whether user is near the bottom
+  // Track whether user is near the bottom (only update on scroll)
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -26,8 +28,12 @@ export default function ChatList({ messages }: Props) {
   // Auto-scroll when new messages arrive or last message content changes (only if user is at/near bottom)
   const lastMessageContent = messages.length > 0 ? messages[messages.length - 1].content : '';
   useEffect(() => {
+    // Only scroll if user was at bottom before new message
     if (isAtBottom) bottomRef.current?.scrollIntoView({ block: 'end' });
-  }, [messages.length, lastMessageContent, isAtBottom]);
+    // Do NOT set isAtBottom here, only in handleScroll!
+    // This prevents infinite update loops.
+    // eslint-disable-next-line
+  }, [messages.length, lastMessageContent]);
 
   // Optional: also react to content reflows (fonts/images) via ResizeObserver
   useEffect(() => {
@@ -39,6 +45,24 @@ export default function ChatList({ messages }: Props) {
     ro.observe(el);
     return () => ro.disconnect();
   }, [isAtBottom]);
+
+  useEffect(() => {
+    const previousHeight = scrollRef.current?.clientHeight || 0;
+    const observer = new ResizeObserver(() => {
+      const currentHeight = scrollRef.current?.clientHeight || 0;
+      //if (currentHeight !== previousHeight) {
+      console.log('Scroll container height changed:', currentHeight);
+      //}
+    });
+
+    if (scrollRef.current) {
+      observer.observe(scrollRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [messages]);
 
   return (
     <div className="w-full relative space-y-3 h-[calc(100vh-150px)]">

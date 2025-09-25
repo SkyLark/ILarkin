@@ -1,21 +1,38 @@
 'use client';
 
 import { TextArea, IconButton } from '@radix-ui/themes';
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useChat } from '../lib/useChat';
-import ChatList from './ChatList';
 
-export default function ChatBar() {
+import type { ChatMessage } from '../../types/chat';
+
+interface ChatBarProps {
+  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+}
+
+export default function ChatBar({ setMessages }: ChatBarProps) {
   const [value, setValue] = useState('');
   const { messages, send, stop, isGenerating } = useChat();
   const handleChatApply = () => {
     send(value);
+    setMessages((prev) => [...prev, { role: 'user', content: value }]);
     setValue('');
   };
 
   const handleStop = () => {
     stop();
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleChatApply();
+    }
+  };
+
+  useEffect(() => {
+    setMessages(messages);
+  }, [messages]);
 
   return (
     <div className="relative flex flex-col justify-center w-full ">
@@ -25,6 +42,7 @@ export default function ChatBar() {
           className="w-full"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10">
           <IconButton
