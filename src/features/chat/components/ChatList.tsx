@@ -141,10 +141,10 @@ export default function ChatList({ messages }: ChatListProps) {
   }, [messages.length]);
 
   return (
-    <div className="relative  h-[calc(100dvh-62px)] max-w-full  shadow">
+    <div className="relative  h-[calc(100dvh-62px)] max-w-full">
       <div
         ref={viewportRef}
-        className="relative h-full w-full  overflow-auto bg-neutral-50"
+        className="relative h-full w-full  overflow-auto"
         style={{
           scrollSnapType: noSnap ? 'none' : 'y mandatory',
           scrollbarGutter: 'stable both-edges',

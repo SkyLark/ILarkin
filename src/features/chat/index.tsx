@@ -8,7 +8,7 @@ export default function Chat() {
   return (
     <>
       <ChatList messages={messages} />
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="absolute w-full flex justify-center bottom-5 left-0 right-0">
         <ChatBar send={send} stop={stop} isGenerating={isGenerating} />
       </div>
     </>

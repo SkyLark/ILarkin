@@ -7,7 +7,7 @@ export default function LandingPage() {
     <div className="flex flex-col h-full w-full bg-white">
       <div className="relative flex gap-2 h-full w-full flex-1 transition-colors z-0">
         {/* Side bar */}
-        <div className="w-64 shadow-[1px_0_0_0_rgba(107,114,128,0.2)] bg-gray-100">
+        <div className="w-64 shadow-[1px_0_0_0_rgba(107,114,128,0.2)] bg-[#f9f9f9]">
           {/* Side bar content */}
         </div>
         {/* Chat list */}
