@@ -1,13 +1,8 @@
 'use client';
-import React, { useState } from 'react';
-// import { TopMenu } from './TopMenu';
-import ChatBar from './components/ChatBar';
-import ChatList from './components/ChatList';
-import type { ChatMessage } from '../types/chat';
+import React from 'react';
+import Chat from '../features/chat';
 
-export default function Home() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-
+export default function LandingPage() {
   return (
     <div className="flex flex-col h-full w-full bg-white">
       <div className="relative flex gap-2 h-full w-full flex-1 transition-colors z-0">
@@ -25,18 +20,7 @@ export default function Home() {
               <header className="sticky top-0 p-2 mb-5 flex items-center justify-between z-20 bg-white shadow-[0_1px_0_0_rgba(107,114,128,0.2)]">
                 <h1 className="text-lg font-normal">ILarkin Chat</h1>
               </header>
-              <div className="relative flex basis-auto flex-col grow overflow-hidden">
-                <div className="relative h-full">
-                  <div className="flex h-[calc(100vh-160px)] flex-col">
-                    <div className="flex flex-col text-sm">
-                      <ChatList messages={messages} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute bottom-5 left-0 right-0">
-                <ChatBar setMessages={setMessages} />
-              </div>
+              <Chat />
             </div>
           </main>
         </div>

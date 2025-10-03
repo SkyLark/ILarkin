@@ -1,11 +1,11 @@
-'use client';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { ChatMessage } from '../types/chat';
-import ChatBar from './components/ChatBar';
+import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react';
+import type { ChatMessage } from '../../../types/chat';
 
-export default function SectionsWithSmartScroll() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+interface ChatListProps {
+  messages: ChatMessage[];
+}
 
+export default function ChatList({ messages }: ChatListProps) {
   // Refs
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const newestSectionRef = useRef<HTMLDivElement | null>(null);
@@ -140,60 +140,52 @@ export default function SectionsWithSmartScroll() {
     };
   }, [messages.length]);
 
-  // --- Render ----------------------------------------------------------------
-
   return (
-    <>
-      <div className="relative  h-[calc(100dvh-62px)] max-w-full  shadow">
-        {/* Outer scroll container (the only scrollable area) */}
-        <div
-          ref={viewportRef}
-          className="relative h-full w-full  overflow-auto bg-neutral-50"
-          style={{
-            scrollSnapType: noSnap ? 'none' : 'y mandatory',
-            scrollbarGutter: 'stable both-edges',
-            overflowAnchor: 'none',
-          }}
-        >
-          {Array.from({ length: Math.ceil(messages.length / 2) }, (_, si) => {
-            const start = si * 2;
-            const group = messages.slice(start, start + 2);
-            const isLastSection = si === Math.ceil(messages.length / 2) - 1;
+    <div className="relative  h-[calc(100dvh-62px)] max-w-full  shadow">
+      <div
+        ref={viewportRef}
+        className="relative h-full w-full  overflow-auto bg-neutral-50"
+        style={{
+          scrollSnapType: noSnap ? 'none' : 'y mandatory',
+          scrollbarGutter: 'stable both-edges',
+          overflowAnchor: 'none',
+        }}
+      >
+        {Array.from({ length: Math.ceil(messages.length / 2) }, (_, si) => {
+          const start = si * 2;
+          const group = messages.slice(start, start + 2);
+          const isLastSection = si === Math.ceil(messages.length / 2) - 1;
 
-            return (
-              <div
-                key={`sec-${si}`}
-                ref={isLastSection ? newestSectionRef : null}
-                className={`snap-start flex flex-col px-6 py-6 bg-white ${isLastSection ? 'min-h-[calc(100dvh-62px)]' : ''}`}
-              >
-                {group.map((m, j) => {
-                  const idx = start + j;
-                  return (
-                    <article
-                      data-turn={m.role}
-                      key={idx}
-                      className={`${m.role === 'user' ? 'text-right' : 'text-left'}`}
+          return (
+            <div
+              key={`sec-${si}`}
+              ref={isLastSection ? newestSectionRef : null}
+              className={`snap-start flex flex-col px-6 py-6 bg-white ${isLastSection ? 'min-h-[calc(100dvh-62px)]' : ''}`}
+            >
+              {group.map((m, j) => {
+                const idx = start + j;
+                return (
+                  <article
+                    data-turn={m.role}
+                    key={idx}
+                    className={`${m.role === 'user' ? 'text-right' : 'text-left'}`}
+                  >
+                    <div
+                      className={
+                        'inline-block rounded-xl px-3 py-2 ' +
+                        (m.role === 'user' ? 'bg-gray-900 text-white' : 'bg-gray-100')
+                      }
                     >
-                      <div
-                        className={
-                          'inline-block rounded-xl px-3 py-2 ' +
-                          (m.role === 'user' ? 'bg-gray-900 text-white' : 'bg-gray-100')
-                        }
-                      >
-                        <p>{m.content}</p>
-                      </div>
-                    </article>
-                  );
-                })}
-                {isLastSection ? <div ref={newestTailRef} /> : null}
-              </div>
-            );
-          })}
-        </div>
+                      <p>{m.content}</p>
+                    </div>
+                  </article>
+                );
+              })}
+              {isLastSection ? <div ref={newestTailRef} /> : null}
+            </div>
+          );
+        })}
       </div>
-      <div className="absolute bottom-0 left-0 right-0">
-        <ChatBar setMessages={setMessages} />
-      </div>
-    </>
+    </div>
   );
 }

@@ -1,21 +1,17 @@
-'use client';
-
 import { TextArea, IconButton } from '@radix-ui/themes';
-import React, { useState, useEffect } from 'react';
-import { useChat } from '../lib/useChat';
-
-import type { ChatMessage } from '../../types/chat';
+import React, { useState } from 'react';
 
 interface ChatBarProps {
-  setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
+  send: (message: string) => void;
+  stop: () => void;
+  isGenerating: boolean;
 }
 
-export default function ChatBar({ setMessages }: ChatBarProps) {
+export default function ChatBar({ send, stop, isGenerating }: ChatBarProps) {
   const [value, setValue] = useState('');
-  const { messages, send, stop, isGenerating } = useChat();
+
   const handleChatApply = () => {
     send(value);
-    setMessages((prev) => [...prev, { role: 'user', content: value }]);
     setValue('');
   };
 
@@ -29,10 +25,6 @@ export default function ChatBar({ setMessages }: ChatBarProps) {
       handleChatApply();
     }
   };
-
-  useEffect(() => {
-    setMessages(messages);
-  }, [messages]);
 
   return (
     <div className="relative flex flex-col justify-center w-full ">

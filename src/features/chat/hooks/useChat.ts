@@ -1,6 +1,6 @@
 // lib/useChat.ts
 import { useRef, useState } from 'react';
-import type { ChatMessage } from '../../types/chat';
+import type { ChatMessage } from '../../../types/chat';
 
 export function useChat(model = 'llama3.1:8b') {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
